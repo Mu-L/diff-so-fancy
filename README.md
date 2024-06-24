@@ -32,6 +32,9 @@ git config --global core.pager "diff-so-fancy | less --tabs=4 -RF"
 git config --global interactive.diffFilter "diff-so-fancy --patch"
 ```
 
+You can look at the [pro-tips](pro-tips.md#Automatic-fallback) for a more extended configuration that transparently falls back
+to default git behaviour if `diff-so-fancy` can't be found.
+
 ### Improved colors for the highlighted bits
 
 The default Git colors are not optimal. The colors used for the screenshot above were:

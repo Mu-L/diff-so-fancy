@@ -68,6 +68,37 @@ zplug "so-fancy/diff-so-fancy", as:command, use:bin/git-dsf
 zgenom load so-fancy/diff-so-fancy
 ```
 
+## Automatic fallback
+
+You might automatically distribute your git config as part of your dotfiles to new machines, where you may not have access to `diff-so-fancy`.
+In this case, rather than getting an error message every time you run `git diff` or `git add -p`, the following configuration may help:
+
+To make `git diff` automatically fall back to just using `less`:
+
+```shell
+git config --global core.pager "command -v diff-so-fancy >/dev/null 2>&1 && diff-so-fancy | less --tabs=4 -RF || less"
+```
+
+Making the interactive filter automatically fall back is a bit more difficult. A helper script comes into play here, to check if `diff-so-fancy` is installed:
+
+```zsh
+#!/usr/bin/zsh
+command -v diff-so-fancy >/dev/null 2>&1
+
+if [[ $? -eq 0 ]] 
+then
+        cat | diff-so-fancy --patch
+else
+        cat
+fi
+```
+
+Then, configure git (replace `dsf-filter` with whatever you named the helper script):
+
+```shell
+git config interactive.diffFilter "dsf-filter"
+```
+
 ## `hg` configuration
 
 You can configure `hg diff` output to use `diff-so-fancy` by adding this alias
